@@ -17,48 +17,6 @@ import java.util.Map;
  */
 abstract public class JSONDataProvider extends BaseVolleyDataProvider
 {
-   @Override
-    protected Request getPostRequest(String url, final Map<String, String> params, Response.Listener done, Response.ErrorListener error) {
-        StringRequest request = new StringRequest(Request.Method.POST,url,done ,error){
-            @Override
-            protected Map<String, String> getParams() {
-                return params;
-            }
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                Map<String, String> headers = super.getHeaders();
-                Map<String,String> cookies= getVolleyRequestController().getCookies();
-                if(cookies!=null && cookies.entrySet().size()!=0) {
-                    for (Map.Entry<String, String> stringStringEntry : cookies.entrySet()) {
-                        headers.put(stringStringEntry.getKey(), stringStringEntry.getValue());
-                    }
-                }
-                return headers;
-            }
-        };
-        return request;
-    }
-
-    @Override
-    protected Request getGetRequest(String url, Response.Listener done, Response.ErrorListener error) {
-        StringRequest request = new StringRequest(Request.Method.GET,url,done ,error){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                Map<String, String> headers = super.getHeaders();
-                Map<String,String> cookies= getVolleyRequestController().getCookies();
-                if(cookies!=null && cookies.entrySet().size()!=0) {
-                    for (Map.Entry<String, String> stringStringEntry : cookies.entrySet()) {
-                        headers.put(stringStringEntry.getKey(), stringStringEntry.getValue());
-                    }
-                }
-                return headers;
-            }
-        };
-        return request;
-    }
-
     protected Gson gson;
     public JSONDataProvider(IVolleyRequestProvider volleyRequestController)
     {
@@ -71,14 +29,6 @@ abstract public class JSONDataProvider extends BaseVolleyDataProvider
         gson=null;
     }
     @Override
-    protected void onResult(String url,Object response) {
-        dataHandler(url,response);
-    }
-
-    @Override
-    protected void onError(String url,VolleyError error) {
-        dataLoadError(error);
-    }
     protected void dataHandler(String url, Object json)
     {
         try

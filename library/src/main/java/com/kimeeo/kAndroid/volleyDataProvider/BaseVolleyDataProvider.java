@@ -2,9 +2,11 @@ package com.kimeeo.kAndroid.volleyDataProvider;
 
 import android.content.Context;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.kimeeo.kAndroid.listViews.dataProvider.DataModel;
 import com.kimeeo.kAndroid.listViews.dataProvider.NetworkDataProvider;
 
@@ -19,6 +21,48 @@ import java.util.Objects;
  */
 abstract public class BaseVolleyDataProvider extends NetworkDataProvider
 {
+
+    protected Request getPostRequest(String url, final Map<String, String> params, Response.Listener done, Response.ErrorListener error) {
+        StringRequest request = new StringRequest(Request.Method.POST,url,done ,error){
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                Map<String, String> headers = super.getHeaders();
+                Map<String,String> cookies= getVolleyRequestController().getCookies();
+                if(cookies!=null && cookies.entrySet().size()!=0) {
+                    for (Map.Entry<String, String> stringStringEntry : cookies.entrySet()) {
+                        headers.put(stringStringEntry.getKey(), stringStringEntry.getValue());
+                    }
+                }
+                return headers;
+            }
+        };
+        return request;
+    }
+
+
+    protected Request getGetRequest(String url, Response.Listener done, Response.ErrorListener error) {
+        StringRequest request = new StringRequest(Request.Method.GET,url,done ,error){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                Map<String, String> headers = super.getHeaders();
+                Map<String,String> cookies= getVolleyRequestController().getCookies();
+                if(cookies!=null && cookies.entrySet().size()!=0) {
+                    for (Map.Entry<String, String> stringStringEntry : cookies.entrySet()) {
+                        headers.put(stringStringEntry.getKey(), stringStringEntry.getValue());
+                    }
+                }
+                return headers;
+            }
+        };
+        return request;
+    }
+
     //private long cachingTime=1 * 60 * 1000;
     private long cachingTime=-1;
     protected long getCachingTime()
@@ -45,9 +89,6 @@ abstract public class BaseVolleyDataProvider extends NetworkDataProvider
     {
 
     }
-    abstract protected Request getPostRequest(String url,Map<String, String> params,Response.Listener done,Response.ErrorListener error);
-    abstract protected Request getGetRequest(String url,Response.Listener done,Response.ErrorListener error);
-
     private void invokePostService(String url, Map<String, Object> params)
     {
         Map<String, String> paramsFinal=getParamParse(params);
@@ -98,8 +139,11 @@ abstract public class BaseVolleyDataProvider extends NetworkDataProvider
     }
 
     protected void onResult(String url,Object response) {
+        dataHandler(url, response);
 
     }
+
+    protected abstract void dataHandler(String url, Object response);
 
     private void invokeGetService(String url)
     {
