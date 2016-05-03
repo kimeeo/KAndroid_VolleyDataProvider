@@ -37,7 +37,7 @@ abstract public class JSONFallbackOfflineDataProvider extends JSONDataProvider {
         if(isConnected)
             super.invokeLoadRefresh();
         else
-            listDataIn(offlineListProvider.getData(getNextURL(), getRefreshParam()));
+            listDataIn(offlineListProvider.getData(getRefreshURL(), getRefreshParam()));
     }
     protected void listDataIn(List list) {
         if(list!=null)
