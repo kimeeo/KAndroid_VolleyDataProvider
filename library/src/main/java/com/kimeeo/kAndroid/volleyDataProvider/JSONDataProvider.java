@@ -1,16 +1,11 @@
 package com.kimeeo.kAndroid.volleyDataProvider;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.kimeeo.kAndroid.listViews.dataProvider.DataModel;
 import com.kimeeo.kAndroid.listViews.dataProvider.IParseableObject;
 
 import java.util.List;
-import java.util.Map;
+
 
 /**
  * Created by bpa001 on 5/3/16.
