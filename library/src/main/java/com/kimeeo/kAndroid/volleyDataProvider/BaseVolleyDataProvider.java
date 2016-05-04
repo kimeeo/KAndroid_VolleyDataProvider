@@ -7,14 +7,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.kimeeo.kAndroid.listViews.dataProvider.DataModel;
 import com.kimeeo.kAndroid.listViews.dataProvider.NetworkDataProvider;
-
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by bpa001 on 5/3/16.
@@ -38,6 +33,13 @@ abstract public class BaseVolleyDataProvider extends NetworkDataProvider
                         headers.put(stringStringEntry.getKey(), stringStringEntry.getValue());
                     }
                 }
+
+                Map<String,String> headersIn= getVolleyRequestController().getHeaders();
+                if(headersIn!=null && headersIn.entrySet().size()!=0) {
+                    for (Map.Entry<String, String> headersInEntry : headersIn.entrySet()) {
+                        headers.put(headersInEntry.getKey(), headersInEntry.getValue());
+                    }
+                }
                 return headers;
             }
         };
@@ -57,27 +59,22 @@ abstract public class BaseVolleyDataProvider extends NetworkDataProvider
                         headers.put(stringStringEntry.getKey(), stringStringEntry.getValue());
                     }
                 }
+
+                Map<String,String> headersIn= getVolleyRequestController().getHeaders();
+                if(headersIn!=null && headersIn.entrySet().size()!=0) {
+                    for (Map.Entry<String, String> headersInEntry : headersIn.entrySet()) {
+                        headers.put(headersInEntry.getKey(), headersInEntry.getValue());
+                    }
+                }
                 return headers;
             }
         };
         return request;
     }
 
-    //private long cachingTime=1 * 60 * 1000;
-    private long cachingTime=-1;
-    protected long getCachingTime()
-    {
-        return cachingTime;
-    }
-    protected void setCachingTime(long value)
-    {
-        cachingTime = value;
-    }
-
     public void garbageCollectorCall()
     {
         super.garbageCollectorCall();
-        ajaxCancel();
         volleyRequestController=null;
     }
     protected void dataIn(String url, Object data)
@@ -85,10 +82,6 @@ abstract public class BaseVolleyDataProvider extends NetworkDataProvider
 
     }
 
-    public void ajaxCancel()
-    {
-
-    }
     private void invokePostService(String url, Map<String, Object> params)
     {
         Map<String, String> paramsFinal=getParamParse(params);
@@ -129,7 +122,6 @@ abstract public class BaseVolleyDataProvider extends NetworkDataProvider
 
     protected Response.Listener getDone(final String url) {
         Response.Listener listener=new Response.Listener<Object>() {
-
             @Override
             public void onResponse(Object response) {
                 onResult(url,response);
@@ -140,7 +132,6 @@ abstract public class BaseVolleyDataProvider extends NetworkDataProvider
 
     protected void onResult(String url,Object response) {
         dataHandler(url, response);
-
     }
 
     protected abstract void dataHandler(String url, Object response);
