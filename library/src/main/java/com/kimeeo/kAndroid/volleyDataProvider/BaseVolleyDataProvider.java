@@ -150,10 +150,10 @@ abstract public class BaseVolleyDataProvider extends NetworkDataProvider
     {
         String url = getNextURL();
         if(url!=null) {
-            if (getMethod() == Request.Method.GET) {
+            if (getMethod() == Request.Method.GET || getMethod() == METHOD_GET) {
                 invokeGetService(url);
             }
-            else if (getMethod() == Request.Method.POST) {
+            else if (getMethod() == Request.Method.POST || getMethod() == METHOD_POST) {
                 Object param = getNextParam();
                 if(param instanceof Map) {
                     Map<String, Object> params = (Map<String, Object>) param;
@@ -171,9 +171,9 @@ abstract public class BaseVolleyDataProvider extends NetworkDataProvider
     {
         String url = getRefreshURL();
         if(url!=null) {
-            if (getMethod() == Request.Method.GET)
+            if (getMethod() == Request.Method.GET || getMethod() == METHOD_GET)
                 invokeGetService(url);
-            else if (getMethod() == Request.Method.POST) {
+            else if (getMethod() == Request.Method.POST || getMethod() == METHOD_POST) {
                 Object param = getRefreshParam();
                 if(param instanceof Map) {
                     Map<String, Object> params = (Map<String, Object>) param;
