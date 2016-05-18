@@ -24,7 +24,7 @@ dependencies {
     final SUPPORT_LIBRARY_VERSION = '23.3.0'
     compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
 
-    final KANDROID_LISTVIEW_VERSION = '0c12b51cbe'
+    final KANDROID_LISTVIEW_VERSION = '7d7ad9ad1a'
     compile "com.github.kimeeo:KAndroid_ListView:$KANDROID_LISTVIEW_VERSION"
 
     //JSON Parser
