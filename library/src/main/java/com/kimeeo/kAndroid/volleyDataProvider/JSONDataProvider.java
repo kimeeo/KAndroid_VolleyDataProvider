@@ -1,8 +1,8 @@
 package com.kimeeo.kAndroid.volleyDataProvider;
 
 import com.google.gson.Gson;
-import com.kimeeo.kAndroid.listViews.dataProvider.DataModel;
-import com.kimeeo.kAndroid.listViews.dataProvider.IParseableObject;
+import com.kimeeo.kAndroid.dataProvider.DataModel;
+import com.kimeeo.kAndroid.dataProvider.IParseableObject;
 
 import java.util.List;
 
